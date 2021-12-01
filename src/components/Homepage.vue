@@ -1,23 +1,13 @@
-<script setup>
-import { ref } from 'vue'
-
-defineProps({})
-
-const count = ref(0)
-</script>
-
 <template>
-  <h3>{{Date()}}</h3>
-
-  <p>
-    Author: Herbert Wang
-  </p>
-
-  <p>
-   Vue3 with vite , quasar
-  </p>
+  <Mainframe></Mainframe>
 
 </template>
+<script>
+import Mainframe from '../components/Mainframe/QuasarLayout.vue'
+export default{
+   components: { Mainframe}
+}
+</script>
 
 <style scoped>
 a {
