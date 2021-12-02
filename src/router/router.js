@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory}  from 'vue-router'
+import {createRouter, createWebHashHistory,createWebHistory }  from 'vue-router'
 import Crawlers from '../layouts/Crawler.vue'
 import CrawlersChild from '../pages/CrawlerChild.vue'
 const routes = [
@@ -6,7 +6,7 @@ const routes = [
     path: '/Crawler',
     component: Crawlers,
     children: [
-      {
+      { 
         path: 'CrawlerChild',
         component:CrawlersChild
       },
@@ -15,7 +15,9 @@ const routes = [
 ]
 
 const router = createRouter({
-  history:createWebHashHistory(),
+  //不同的历史模式：Hash模式（带着#）
+  //history:createWebHashHistory(),
+  history:createWebHistory(),
   routes,
 })
 

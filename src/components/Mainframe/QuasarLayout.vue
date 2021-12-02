@@ -1,14 +1,15 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header class="bg-primary text-white">
+    <q-header class="bg-white text-dark">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-        <q-toolbar-title> </q-toolbar-title>
+        <q-toolbar-title></q-toolbar-title>
       </q-toolbar>
     </q-header>
     <!--
       show-if-above:当屏幕宽度大于断点数值的时候，自动展示sidebar
       breakpoint:断点宽度，小于这个宽度不显示
+      v-ripple:用来做动画特效的，按钮点击的时候会有波浪一样的东西
     -->
     <q-drawer
       v-model="leftDrawerOpen"
@@ -40,16 +41,12 @@
     </q-drawer>
 
     <q-page-container>
-      <h5>{{ time }}</h5>
-      <p>Author: Herbert Wang</p>
-      <p>Vue3 with vite, quasar</p>
       <router-view />
     </q-page-container>
 
-    <q-footer class="bg-grey-8 text-white">
+    <q-footer class="bg-grey-2 text-dark">
       <q-toolbar>
-        <q-toolbar-title>
-        </q-toolbar-title>
+        <q-toolbar-title> </q-toolbar-title>
       </q-toolbar>
     </q-footer>
   </q-layout>
@@ -57,29 +54,16 @@
 
 <script>
 import { ref } from "vue";
-import moment from "moment";
+import { MenuList } from "../../utils/MenuList"
 
-const menuList = [
-  {
-    icon: "inbox",
-    label: "Crawler",
-    separator: true,
-  },
-  {
-    icon: "send",
-    label: "Outbox",
-    separator: true,
-  },
-];
 
 export default {
   setup() {
     //应该是用来判断侧栏展示和消失的
     const leftDrawerOpen = ref(false);
-    const time = ref("");
     const activeroute = ref("");
+    const menuList=ref(MenuList)
     return {
-      time,
       leftDrawerOpen,
       menuList,
       activeroute,
@@ -88,35 +72,20 @@ export default {
       },
     };
   },
-  created() {
-    this.getData();
-    this.timer();
-  },
-  destroyed() {
-    clearInterval(this.timer);
-  },
   methods: {
-    getData() {
-      let date = moment().format("MMMM Do YYYY, h:mm:ss a");
-      this.time = date;
-    },
-    timer() {
-      this.time = setInterval(() => {
-        this.getData();
-      }, 100);
-    },
+    //路由添加：如果push里不加'/'，新的路由会添加在旧的路由后面
     presentRoute(item) {
+      console.log(item);
       this.activeroute = item.label;
-      console.log(this.$router)
-      this.$router.push('/Crawler');
+      if (item.children!==undefined) {
+        this.$router.push(`/${item.label}/${item.children[0]}`);
+      } else {
+        this.$router.push(`/${item.label}`);
+      }
     },
   },
 };
 </script>
 
 <style scoped>
-.qdrawerMf {
-  padding-top: 0px !important;
-  margin-top: 0px !important ;
-}
 </style>
